@@ -721,6 +721,8 @@ static bool OsAppsUseDarkMode() {
     RegGetValueW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
                  L"AppsUseLightTheme", RRF_RT_REG_DWORD, nullptr, &val, &cb);
     return val == 0;
+#elif OS_DARWIN
+    return MacUsesDarkMode();
 #else
     // ng: gpui reports the system appearance; step 12 asks it here
     return false;

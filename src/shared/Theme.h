@@ -12,6 +12,10 @@ Str ToggleLightDarkThemeTargetName();
 void SumatraUpdateTheme();
 void UpdateThemeAfterSystemColorChange();
 void UpdateThemeAfterHighContrastChange();
+#if OS_DARWIN
+// implemented by each app
+bool MacUsesDarkMode();
+#endif
 bool ThemeUsesHighContrastColors();
 void CreateThemeCommands();
 

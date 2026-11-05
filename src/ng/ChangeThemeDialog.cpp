@@ -279,7 +279,12 @@ static gp::El* ChangeThemeColumn(gp::Ctx* cx) {
         for (int i = 0; i <= nThemes; i++) {
             // orig: a mode, not another color theme, so its name is distinct
             // from the persisted Theme = System value
-            Str name = (i == kFollowWindowsThemeListIndex) ? Tr("Follow Windows") : ThemeGetNameAt(i - 1);
+#if OS_WIN
+            Str followName = Tr("Follow Windows");
+#else
+            Str followName = Tr("Follow system");
+#endif
+            Str name = (i == kFollowWindowsThemeListIndex) ? followName : ThemeGetNameAt(i - 1);
             list->Child(DlgListRow(cx, fmt("theme-row-%d", i), name, i == gChangeTheme.sel,
                                    gp::ListenTo(gChangeThemeView, &ChangeThemeView::OnRowClick, (intptr_t)i)));
         }

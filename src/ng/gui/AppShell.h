@@ -160,6 +160,7 @@ float AppShellRenderScale(gpui::Window* win);
 #endif
 #if OS_DARWIN
 void AppShellDisableAutoTermination();
+void AppShellWatchAppearance();
 void AppShellHandleOpenDocs();
 void AppShellOpenDocsReady();
 #endif

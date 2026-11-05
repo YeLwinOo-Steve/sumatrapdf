@@ -17,6 +17,7 @@
 #include "SumatraPDF.h"
 #include "MainWindow.h"
 #include "gui/AppShell.h"
+#include "Theme.h"
 
 // AppKit turns automatic termination back on at the end of launch when it
 // still counts zero windows. Under lldb the app never becomes frontmost, so
@@ -25,6 +26,24 @@ void AppShellDisableAutoTermination() {
     NSProcessInfo* info = [NSProcessInfo processInfo];
     info.automaticTerminationSupportEnabled = NO;
     [info disableAutomaticTermination:@"SumatraPDF"];
+}
+
+// macOS appearance for the System theme. Read from user defaults because
+// NSApp may not exist yet when settings load.
+bool MacUsesDarkMode() {
+    NSString* style = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppleInterfaceStyle"];
+    return [style isEqualToString:@"Dark"];
+}
+
+// re-resolve the System theme when the user switches light / dark mode
+void AppShellWatchAppearance() {
+    NSDistributedNotificationCenter* nc = [NSDistributedNotificationCenter defaultCenter];
+    [nc addObserverForName:@"AppleInterfaceThemeChangedNotification"
+                    object:nil
+                     queue:[NSOperationQueue mainQueue]
+                usingBlock:^(NSNotification*) {
+                  UpdateThemeAfterSystemColorChange();
+                }];
 }
 
 // Backing pixels per point. The canvas is drawn in points, so a tile rendered

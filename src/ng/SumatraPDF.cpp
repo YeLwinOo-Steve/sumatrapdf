@@ -7134,6 +7134,7 @@ int GpuiMain(int argc, char** argv) {
     gAppStartTime = TimeGet();
 #if OS_DARWIN
     AppShellDisableAutoTermination();
+    AppShellWatchAppearance();
 #endif
 #if OS_WIN
     // ng: orig's WinMain does this; without it WIC and GDI+ decode nothing, so
